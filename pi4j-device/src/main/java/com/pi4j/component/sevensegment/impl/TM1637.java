@@ -7,17 +7,14 @@ package com.pi4j.component.sevensegment.impl;
 
 import com.pi4j.component.sevensegment.SevenSegment;
 import com.pi4j.io.gpio.GpioController;
-import com.pi4j.io.gpio.GpioPin;
-import com.pi4j.io.gpio.GpioPinDigitalInput;
 import com.pi4j.io.gpio.GpioPinDigitalMultipurpose;
 import com.pi4j.io.gpio.GpioPinDigitalOutput;
 import com.pi4j.io.gpio.Pin;
 import com.pi4j.io.gpio.PinMode;
 import com.pi4j.io.gpio.PinState;
 import com.pi4j.io.gpio.RaspiPin;
-import com.pi4j.wiringpi.Gpio;
 import java.util.HashMap;
-import javafx.scene.input.KeyCode;
+import java.util.Iterator;
 
 /*-
  * #%L
@@ -234,6 +231,23 @@ public class TM1637 extends SevenSegment {
         show(digits, BRIGHT_DEFAULT, false);
     }
 
+    public String displayed() {
+        String s = "";
+        for (int i=0;i<digit.length;i++) {
+            Iterator<String> it = charmap.keySet().iterator();
+            boolean found = false;
+            while (it.hasNext()) {
+                String car = it.next();
+                if (charmap.get(car) == digit[i]) {
+                    s += ""+car;
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) s += "?";
+        }
+        return s;
+    }
     //**************************************************************************
     //*** API
     //**************************************************************************
@@ -315,7 +329,7 @@ public class TM1637 extends SevenSegment {
 
     private void sendData() {
         try {
-            System.out.println("SHOWING DIGIT AS BYTE " + digit[0] + "," + digit[1] + "," + digit[2] + "," + digit[3]);
+            // System.out.println("SHOWING DIGIT AS BYTE " + digit[0] + "," + digit[1] + "," + digit[2] + "," + digit[3]);
             begin();
             writeByte(ADDR_AUTO);
             end();

@@ -65,6 +65,12 @@ public abstract class SevenSegment {
     public abstract void showDigit(String digits, int index);
 
     /**
+     * Return the anctual displayed digits
+     * @return
+     */
+    public abstract String displayed();
+
+    /**
      * Clear the display
      *
      */
